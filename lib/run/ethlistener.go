@@ -86,14 +86,23 @@ func (el *EthereumListener) listenForMessages() {
 func (el *EthereumListener) handleNewHead(response map[string]interface{}) {
 	params := response["params"].(map[string]interface{})
 	result := params["result"].(map[string]interface{})
+	jsonData, _ := json.MarshalIndent(result, "", "  ")
+	println("[debug] New block:", string(jsonData))
+	// blockNo := result["number"].(string)
+	// request := map[string]interface{}{
+	// 	"jsonrpc": "2.0",
+	// 	"id":      1,
+	// 	"method":  "eth_getBlockByNumber",
+	// 	"params":  []interface{}{blockNo, false},
+	// }
 
-	blockNo := result["number"].(string)
+	blockHash := result["hash"].(string)
 
 	request := map[string]interface{}{
 		"jsonrpc": "2.0",
 		"id":      1,
-		"method":  "eth_getBlockByNumber",
-		"params":  []interface{}{blockNo, false},
+		"method":  "eth_getBlockByHash",
+		"params":  []interface{}{blockHash, false},
 	}
 	err := el.conn.WriteJSON(request)
 	if err != nil {
