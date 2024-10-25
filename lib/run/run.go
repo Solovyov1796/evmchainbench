@@ -14,30 +14,27 @@ func Run(httpRpc, wsRpc, faucetPrivateKey string, senderCount, txCount int, memp
 	}
 
 	// Subscribe new heads
-	err = ethListener.SubscribeNewHeads()
-	if err != nil {
-		log.Fatalf("Failed to subscribe to new heads: %v", err)
-	}
+	ethListener.Subscribe()
 
-	generator, err := NewGenerator(httpRpc, faucetPrivateKey, senderCount, txCount, false, "", limiter)
-	if err != nil {
-		log.Fatalf("Failed to create generator: %v", err)
-	}
+	// generator, err := NewGenerator(httpRpc, faucetPrivateKey, senderCount, txCount, false, "", limiter)
+	// if err != nil {
+	// 	log.Fatalf("Failed to create generator: %v", err)
+	// }
 
-	txsMap, err := generator.GenerateSimple()
-	if err != nil {
-		log.Fatalf("Failed to generate transactions: %v", err)
-	}
+	// txsMap, err := generator.GenerateSimple()
+	// if err != nil {
+	// 	log.Fatalf("Failed to generate transactions: %v", err)
+	// }
 
-	transmitter, err := NewTransmitter(httpRpc, limiter)
-	if err != nil {
-		log.Fatalf("Failed to create transmitter: %v", err)
-	}
+	// transmitter, err := NewTransmitter(httpRpc, limiter)
+	// if err != nil {
+	// 	log.Fatalf("Failed to create transmitter: %v", err)
+	// }
 
-	err = transmitter.Broadcast(txsMap)
-	if err != nil {
-		log.Fatalf("Failed to broadcast transactions: %v", err)
-	}
+	// err = transmitter.Broadcast(txsMap)
+	// if err != nil {
+	// 	log.Fatalf("Failed to broadcast transactions: %v", err)
+	// }
 
-	<-ethListener.quit
+	// <-ethListener.quit
 }
